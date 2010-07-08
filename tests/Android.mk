@@ -9,7 +9,7 @@ LOCAL_JAVA_LIBRARIES := android.test.runner
 # Include all test java files.
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
-LOCAL_PACKAGE_NAME := MusicTests
+LOCAL_PACKAGE_NAME := EliotStockerMusicTests
 
 LOCAL_INSTRUMENTATION_FOR := Music
 
