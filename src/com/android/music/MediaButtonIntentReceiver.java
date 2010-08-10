@@ -29,6 +29,7 @@ import android.view.KeyEvent;
  */
 public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
+    static final String TAG = "MediaButtonIntentReceiver";
     private static final int MSG_LONGPRESS_TIMEOUT = 1;
     private static final int LONG_PRESS_DELAY = 1000;
 
@@ -42,6 +43,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
             switch (msg.what) {
                 case MSG_LONGPRESS_TIMEOUT:
                     if (!mLaunched) {
+                        Log.d(TAG, "Launching MusicBrowserActivity");
                         Context context = (Context)msg.obj;
                         Intent i = new Intent();
                         i.putExtra("autoshuffle", "true");
@@ -59,10 +61,9 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String intentAction = intent.getAction();
         if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intentAction)) {
-            Intent i = new Intent(context, MediaPlaybackService.class);
-            i.setAction(MediaPlaybackService.SERVICECMD);
+            Intent i = new Intent(MediaPlaybackService.SERVICECMD);
             i.putExtra(MediaPlaybackService.CMDNAME, MediaPlaybackService.CMDPAUSE);
-            context.startService(i);
+            context.sendBroadcast(i);
         } else if (Intent.ACTION_MEDIA_BUTTON.equals(intentAction)) {
             KeyEvent event = (KeyEvent)
                     intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
@@ -98,6 +99,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
             if (command != null) {
                 if (action == KeyEvent.ACTION_DOWN) {
+                    Log.d(TAG, "Down: " + command);
                     if (mDown) {
                         if (MediaPlaybackService.CMDTOGGLEPAUSE.equals(command)
                                 && mLastClickTime != 0 
@@ -127,6 +129,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
                         mDown = true;
                     }
                 } else {
+                    Log.d(TAG, "Up: " + command);
                     mHandler.removeMessages(MSG_LONGPRESS_TIMEOUT);
                     mDown = false;
                 }
