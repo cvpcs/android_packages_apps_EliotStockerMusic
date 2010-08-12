@@ -11,7 +11,7 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
 LOCAL_PACKAGE_NAME := EliotStockerMusicTests
 
-LOCAL_INSTRUMENTATION_FOR := Music
+LOCAL_INSTRUMENTATION_FOR := EliotStockerMusic
 
 LOCAL_SDK_VERSION := current
 
